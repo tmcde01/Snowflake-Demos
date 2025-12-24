@@ -116,16 +116,14 @@ def create_files_from_pg_tables(pg_connection, utc_time, source_args):
         return patient_tables
 
     except Exception as e:
-        print(f"\t!!! General error occurred in function execute_pg_queries(): {e}. PostgreSQL and Snowflake Connectors will be closed")
+        print(f"\t!!! General error occurred in function create_files_from_pg_tables(): {e}. PostgreSQL and Snowflake Connectors will be closed")
         close_connections(pg_connection)
-        raise
-
 
 def move_files_to_sf(source_args, target_args, utc_time, rsa_key_password, patient_tables):
     print(f"\t--Moving PostgreSQL source table files from {source_args.output_directory} to Snowflake internal stage at: {target_args.stage}...")
     try:
         env = os.environ.copy()
-        env['PRIVATE_KEY_PASSPHRASE'] = rsa_key_password
+        env["PRIVATE_KEY_PASSPHRASE"] = rsa_key_password
         # env["REQUESTS_CA_BUNDLE"] = "/etc/pki/tls/certs/ca-bundle.crt"
         print('\t\t--Setting database, schema, and warehouse connection parameters...')
         set_workspace = (f"USE DATABASE {target_args.db}; "
@@ -158,7 +156,7 @@ def move_files_to_sf(source_args, target_args, utc_time, rsa_key_password, patie
                 continue
 
     except Exception as e:
-        print(f"\t!!!General error occurred in function execute_sf_queries(): {e}.")
+        print(f"\t!!!General error occurred in function move_files_to_sf(): {e}.")
         return None
 
 
