@@ -1,3 +1,6 @@
+# This python script will query tables in PostgreSQL, load the results to csv files on the local server, and then push them
+# to a Snowflake internal stage using the SnowCLI tool
+
 import os
 import time
 import schedule
