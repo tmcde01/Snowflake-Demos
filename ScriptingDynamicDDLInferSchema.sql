@@ -7,9 +7,9 @@ CREATE PROCEDURE IF NOT EXISTS GENERAL_HOSPITAL_PATIENTS.CREATE_SCHEMA_AND_TABLE
 RETURNS STRING
 LANGUAGE SQL
 AS
-$$
+--$$
 DECLARE
-    schema_ STRING DEFAULT SCHEMA_ARG;
+    schema_ STRING DEFAULT 'GENERAL_HOSPITAL_PATIENTS'; --SCHEMA_ARG;
     file_list RESULTSET;
     file_ STRING;  
     table_ STRING;
@@ -41,6 +41,8 @@ BEGIN
                                 --AND
                                 --NOT REGEXP_LIKE(METADATA$FILENAME, '^surgical_encounters_\\d{14}_UTC.csv.gz$')
                             ORDER BY FILE_NAME));
+
+    return table(file_list);
     
     FOR record in file_list DO
     BEGIN        
@@ -67,6 +69,8 @@ BEGIN
                                 --MAX_FILE_COUNT => <num>
                                 --MAX_RECORDS_PER_FILE => <num>
                                 ));';
+        return get_column_metadata;
+        
         column_metadata := (EXECUTE IMMEDIATE get_column_metadata);
         
         column_ddl := '';
